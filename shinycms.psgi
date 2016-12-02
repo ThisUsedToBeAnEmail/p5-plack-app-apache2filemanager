@@ -31,9 +31,12 @@ my $app = sub {
     return $R->response->finalize;
 };
 
+use ShinyCMS;
+
 builder {
     enable "Plack::Middleware::Static",
         path => qr{^/.+},
         root => $document_root;
-    $app;
+    mount '/' => ShinyCMS->to_app;
+    mount '/filemanager' => $app;
 }
